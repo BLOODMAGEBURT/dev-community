@@ -6,9 +6,9 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 /****
- * @Author:www.itheima.com
+ * @Author:xujianbo
  * @Description:Brand构建
- * @Date www.itheima.com 19:13
+ *
  *****/
 
 @Table(name="tb_brand")

@@ -63,6 +63,13 @@ public class BrandController {
     /*
      * 分页条件查询
      * */
+    /**
+     * @title
+     * @description
+     * @author xujianbo
+     * @updateTime 2020/7/15 17:46
+     * @throws
+     */
     @PostMapping("/search/{page}/{size}")
     public Result<PageInfo> findPage(@RequestBody(required = false) Brand brand, @PathVariable int page, @PathVariable int size) {
 

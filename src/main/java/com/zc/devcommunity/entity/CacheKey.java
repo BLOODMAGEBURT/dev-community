@@ -1,7 +1,7 @@
 package com.zc.devcommunity.entity;
 
 /****
- * @Author:www.itheima.com
+ * @Author:xujianbo
  * @Description:
  *****/
 public class CacheKey {

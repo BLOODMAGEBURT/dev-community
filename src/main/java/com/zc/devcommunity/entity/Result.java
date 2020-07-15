@@ -3,7 +3,7 @@ package com.zc.devcommunity.entity;
 
 
 /****
- * @Author:www.itheima.com
+ * @Author:xujianbo
  * @Description:返回实体Bean
  *****/
 
