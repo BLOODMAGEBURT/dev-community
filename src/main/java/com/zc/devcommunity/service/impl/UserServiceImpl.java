@@ -3,6 +3,7 @@ package com.zc.devcommunity.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.zc.devcommunity.dao.UserMapper;
+import com.zc.devcommunity.entity.IdWorker;
 import com.zc.devcommunity.pojo.User;
 import com.zc.devcommunity.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import tk.mybatis.mapper.entity.Example;
 
+import java.util.Date;
 import java.util.List;
 
 /****
@@ -22,7 +24,8 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserMapper userMapper;
-
+    @Autowired
+    private IdWorker idWorker;
 
     /**
      * User条件+分页查询
@@ -162,6 +165,11 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public void add(User user){
+        // 设置id
+        user.setId(idWorker.nextId());
+        // 设置时间
+        user.setCreateTime(new Date());
+        user.setEditTime(new Date());
         userMapper.insert(user);
     }
 
