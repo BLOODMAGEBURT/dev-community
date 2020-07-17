@@ -1,0 +1,10 @@
+server:
+  port: 18081
+spring:
+  application:
+    name: dev
+  datasource:
+    url: jdbc:mysql://192.168.1.130:3306/community?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: 123456
