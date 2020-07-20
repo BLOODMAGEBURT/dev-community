@@ -2,10 +2,8 @@ package com.zc.devcommunity.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageInfo;
-import com.zc.devcommunity.entity.BCrypt;
-import com.zc.devcommunity.entity.JwtUtil;
-import com.zc.devcommunity.entity.Result;
-import com.zc.devcommunity.entity.StatusCode;
+import com.zc.devcommunity.entity.*;
+import com.zc.devcommunity.pojo.Login;
 import com.zc.devcommunity.pojo.User;
 import com.zc.devcommunity.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +14,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+
+import static com.zc.devcommunity.entity.CacheKey.CAPTCHA_KEY;
 
 /****
  * @Author:xujianbo
@@ -31,31 +31,25 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+
     /*
      * 登陆
      * */
     @PostMapping("/login")
-    public Result login(@RequestBody User user) {
+    public Result login(@RequestBody Login login) {
 
-        if (!StringUtils.isEmpty(user.getUsername())) {
+        Map<String, String> map = userService.checkLogin(login);
 
-            User byUsername = userService.findByUsername(user.getUsername());
-
-            if (byUsername != null && BCrypt.checkpw(user.getPassword(), byUsername.getPassword())) {
-
-                // 创建令牌
-                HashMap<String, Object> tokenInfo = new HashMap<>();
-                tokenInfo.put("role", "User");
-                tokenInfo.put("username", user.getUsername());
-
-                String token = JwtUtil.createJWT(UUID.randomUUID().toString(), JSON.toJSONString(tokenInfo), null);
-
-                return new Result(true, StatusCode.OK, "登陆成功",token);
-            }
+        switch (map.get("code")) {
+            case "20000":
+                return new Result(false, StatusCode.OK, map.get("msg"), map.get("token"));
+            case "20002":
+                return new Result(false, StatusCode.LOGINERROR, map.get("msg"));
+            case "20003":
+                return new Result(false, StatusCode.CAPTCHAERROR, map.get("msg"));
+            default:
+                return new Result(false, StatusCode.LOGINERROR, "账号或密码错误");
         }
-
-        return new Result(false, StatusCode.LOGINERROR, "账号或密码错误");
-
     }
 
     /***

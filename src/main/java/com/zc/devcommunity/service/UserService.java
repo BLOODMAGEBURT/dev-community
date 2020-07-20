@@ -1,9 +1,11 @@
 package com.zc.devcommunity.service;
 
 import com.github.pagehelper.PageInfo;
+import com.zc.devcommunity.pojo.Login;
 import com.zc.devcommunity.pojo.User;
 
 import java.util.List;
+import java.util.Map;
 
 /****
  * @Author:xujianbo
@@ -70,4 +72,9 @@ public interface UserService {
      * @return
      */
     List<User> findAll();
+
+    /**
+     * 登陆验证
+     * */
+    Map<String, String> checkLogin(Login login);
 }

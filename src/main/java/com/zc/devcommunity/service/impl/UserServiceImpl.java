@@ -1,19 +1,22 @@
 package com.zc.devcommunity.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.zc.devcommunity.dao.UserMapper;
-import com.zc.devcommunity.entity.BCrypt;
-import com.zc.devcommunity.entity.IdWorker;
+import com.zc.devcommunity.entity.*;
+import com.zc.devcommunity.pojo.Login;
 import com.zc.devcommunity.pojo.User;
 import com.zc.devcommunity.service.UserService;
+import org.apache.catalina.authenticator.SavedRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import tk.mybatis.mapper.entity.Example;
 
-import java.util.Date;
-import java.util.List;
+import java.util.*;
+
+import static com.zc.devcommunity.entity.CacheKey.CAPTCHA_KEY;
 
 /****
  * @Author:xujianbo
@@ -27,6 +30,8 @@ public class UserServiceImpl implements UserService {
     private UserMapper userMapper;
     @Autowired
     private IdWorker idWorker;
+    @Autowired
+    private RedisUtils redisUtils;
 
     /**
      * User条件+分页查询
@@ -219,5 +224,41 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> findAll() {
         return userMapper.selectAll();
+    }
+
+    @Override
+    public Map<String, String> checkLogin(Login login) {
+
+        HashMap<String, String> map = new HashMap<>();
+        String captcha = (String)redisUtils.get(CAPTCHA_KEY.concat(login.getCaptchaKey()));
+        if (!login.getCaptcha().equals(captcha)) {
+            map.put("code", "20003");
+            map.put("msg","验证码错误");
+            return map;
+        }
+
+        if (!StringUtils.isEmpty(login.getUserName())) {
+
+            User byUsername = findByUsername(login.getUserName());
+
+            if (byUsername != null && BCrypt.checkpw(login.getPassword(), byUsername.getPassword())) {
+
+                // 创建令牌
+                HashMap<String, Object> tokenInfo = new HashMap<>();
+                tokenInfo.put("role", "User");
+                tokenInfo.put("username", login.getUserName());
+
+                String token = JwtUtil.createJWT(UUID.randomUUID().toString(), JSON.toJSONString(tokenInfo), null);
+
+                map.put("code", "20000");
+                map.put("msg","登陆成功");
+                map.put("token", token);
+                return map;
+            }
+        }
+
+        map.put("code", "20002");
+        map.put("msg","账号或密码错误");
+        return map;
     }
 }

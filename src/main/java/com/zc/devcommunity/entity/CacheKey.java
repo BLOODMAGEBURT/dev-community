@@ -7,9 +7,9 @@ package com.zc.devcommunity.entity;
 public class CacheKey {
 
     /**
-     * 商品分类
+     * 图片验证码
      */
-    public static String CATEGORY="CATEGORY";
+    public static final String CAPTCHA_KEY="captcha:verification:";
 
     /**
      * 品牌缓存

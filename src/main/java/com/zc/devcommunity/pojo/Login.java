@@ -10,7 +10,7 @@ package com.zc.devcommunity.pojo;
 public class Login {
     private String userName;
 
-    private String pwd;
+    private String password;
 
     private String captchaKey;
 
@@ -24,12 +24,12 @@ public class Login {
         this.userName = userName;
     }
 
-    public String getPwd() {
-        return pwd;
+    public String getPassword() {
+        return password;
     }
 
-    public void setPwd(String pwd) {
-        this.pwd = pwd;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getCaptchaKey() {
