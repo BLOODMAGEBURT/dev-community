@@ -91,7 +91,7 @@ public class HttpClient {
             for (String key : param.keySet()) {
                 if (isFirst) {
                     url.append("?");
-                }else {
+                } else {
                     url.append("&");
                 }
                 url.append(key).append("=").append(param.get(key));
@@ -166,5 +166,22 @@ public class HttpClient {
 
     public String getContent() throws ParseException, IOException {
         return content;
+    }
+
+    public static void main(String[] args) {
+        HashMap<String, String> captchaInfo = new HashMap<>();
+        captchaInfo.put("account", "98b3a6");
+        captchaInfo.put("password", CommonUtil.md5("2vd4f0tbqh", true));
+        captchaInfo.put("mobile", "13014595669");
+        captchaInfo.put("content", "注册密码为111111+【开发者社区】");
+
+
+        try {
+            HttpClient httpClient = new HttpClient("http://api.chanzor.com/send", captchaInfo);
+            httpClient.post();
+            System.out.println(httpClient.getContent());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

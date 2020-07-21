@@ -30,6 +30,8 @@ public class Term implements Serializable{
     @Column(name = "type")
 	private Integer type;//分类类型(1博客，2模型，3专家)
 
+	@Column(name = "order_num")
+	private Integer orderNum;//分类排序
 
 
 	//get方法
@@ -78,5 +80,11 @@ public class Term implements Serializable{
 		this.type = type;
 	}
 
+	public Integer getOrderNum() {
+		return orderNum;
+	}
 
+	public void setOrderNum(Integer orderNum) {
+		this.orderNum = orderNum;
+	}
 }

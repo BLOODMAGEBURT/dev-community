@@ -3,6 +3,8 @@ package com.zc.devcommunity.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.zc.devcommunity.dao.TermMapper;
+import com.zc.devcommunity.entity.IdWorker;
+import com.zc.devcommunity.entity.Result;
 import com.zc.devcommunity.pojo.Term;
 import com.zc.devcommunity.service.TermService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import tk.mybatis.mapper.entity.Example;
 
+import java.util.Date;
 import java.util.List;
 
 /****
@@ -22,6 +25,9 @@ public class TermServiceImpl implements TermService {
 
     @Autowired
     private TermMapper termMapper;
+
+    @Autowired
+    private IdWorker idWorker;
 
 
     /**
@@ -64,6 +70,9 @@ public class TermServiceImpl implements TermService {
     public List<Term> findList(Term term){
         //构建查询条件
         Example example = createExample(term);
+        // 根据order_num 升序排列
+        example.setOrderByClause("order_num asc");
+
         //根据构建的条件查询数据
         return termMapper.selectByExample(example);
     }
@@ -99,6 +108,7 @@ public class TermServiceImpl implements TermService {
                     criteria.andEqualTo("type",term.getType());
             }
         }
+
         return example;
     }
 
@@ -117,7 +127,7 @@ public class TermServiceImpl implements TermService {
      */
     @Override
     public void update(Term term){
-        termMapper.updateByPrimaryKey(term);
+        termMapper.updateByPrimaryKeySelective(term);
     }
 
     /**
@@ -126,6 +136,9 @@ public class TermServiceImpl implements TermService {
      */
     @Override
     public void add(Term term){
+        term.setId(idWorker.nextId());
+        term.setCreateTime(new Date());
+        term.setEditTime(new Date());
         termMapper.insert(term);
     }
 

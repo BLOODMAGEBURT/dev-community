@@ -1,6 +1,7 @@
 package com.zc.devcommunity.controller;
 
 import com.github.pagehelper.PageInfo;
+import com.sun.org.apache.regexp.internal.RE;
 import com.zc.devcommunity.entity.Result;
 import com.zc.devcommunity.entity.StatusCode;
 import com.zc.devcommunity.pojo.Term;
@@ -97,6 +98,7 @@ public class TermController {
      */
     @PostMapping
     public Result add(@RequestBody Term term){
+
         //调用TermService实现添加Term
         termService.add(term);
         return new Result(true,StatusCode.OK,"添加成功");

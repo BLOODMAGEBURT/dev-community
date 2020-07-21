@@ -1,10 +1,11 @@
 package com.zc.devcommunity.controller;
 
 import com.github.pagehelper.PageInfo;
+import com.zc.devcommunity.entity.IdWorker;
 import com.zc.devcommunity.entity.Result;
 import com.zc.devcommunity.entity.StatusCode;
-import com.zc.devcommunity.pojo.Blog;
-import com.zc.devcommunity.service.BlogService;
+import com.zc.devcommunity.pojo.*;
+import com.zc.devcommunity.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,6 +24,15 @@ public class BlogController {
 
     @Autowired
     private BlogService blogService;
+
+    @Autowired
+    private IdWorker idWorker;
+
+    @Autowired
+    private FileRelationshipService fileRelationshipService;
+
+    @Autowired
+    private TermRelationshipService termRelationshipService;
 
     /***
      * Blog分页条件搜索实现
@@ -92,13 +102,14 @@ public class BlogController {
 
     /***
      * 新增Blog数据
-     * @param blog
+     * @param blogWithTypeAndFile
      * @return
      */
     @PostMapping
-    public Result add(@RequestBody Blog blog) {
-        //调用BlogService实现添加Blog
-        blogService.add(blog);
+    public Result add(@RequestBody BlogWithTypeAndFile blogWithTypeAndFile) {
+
+        blogService.saveBlogWithTypeAndFile(blogWithTypeAndFile);
+
         return new Result(true, StatusCode.OK, "添加成功");
     }
 

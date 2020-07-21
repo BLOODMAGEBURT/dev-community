@@ -1,5 +1,7 @@
 package com.zc.devcommunity.pojo;
 
+import java.io.Serializable;
+
 /**
  * @author admin
  * @version 1.0.0
@@ -7,7 +9,7 @@ package com.zc.devcommunity.pojo;
  * @Description 登陆pojo
  * @createTime 2020年07月20日 18:09:00
  */
-public class Login {
+public class Login implements Serializable {
     private String userName;
 
     private String password;

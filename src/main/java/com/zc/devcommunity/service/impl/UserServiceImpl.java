@@ -200,15 +200,15 @@ public class UserServiceImpl implements UserService {
     }
 
     /*
-    * 根据用户名查询用户
-    * */
+     * 根据用户名查询用户
+     * */
     @Override
     public User findByUsername(String username) {
         Example example = new Example(User.class);
         Example.Criteria criteria = example.createCriteria();
 
-        if(!StringUtils.isEmpty(username)){
-            criteria.andEqualTo("username",username);
+        if (!StringUtils.isEmpty(username)) {
+            criteria.andEqualTo("username", username);
         }
 
         User user = userMapper.selectOneByExample(example);
@@ -230,10 +230,12 @@ public class UserServiceImpl implements UserService {
     public Map<String, String> checkLogin(Login login) {
 
         HashMap<String, String> map = new HashMap<>();
-        String captcha = (String)redisUtils.get(CAPTCHA_KEY.concat(login.getCaptchaKey()));
-        if (!login.getCaptcha().equals(captcha)) {
+        String captcha = (String) redisUtils.get(CAPTCHA_KEY.concat(login.getCaptchaKey()));
+
+        // 转为大写
+        if (!login.getCaptcha().toUpperCase().equals(captcha)) {
             map.put("code", "20003");
-            map.put("msg","验证码错误");
+            map.put("msg", "验证码错误");
             return map;
         }
 
@@ -251,14 +253,14 @@ public class UserServiceImpl implements UserService {
                 String token = JwtUtil.createJWT(UUID.randomUUID().toString(), JSON.toJSONString(tokenInfo), null);
 
                 map.put("code", "20000");
-                map.put("msg","登陆成功");
+                map.put("msg", "登陆成功");
                 map.put("token", token);
                 return map;
             }
         }
 
         map.put("code", "20002");
-        map.put("msg","账号或密码错误");
+        map.put("msg", "账号或密码错误");
         return map;
     }
 }

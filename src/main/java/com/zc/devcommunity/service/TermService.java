@@ -1,6 +1,7 @@
 package com.zc.devcommunity.service;
 
 import com.github.pagehelper.PageInfo;
+import com.zc.devcommunity.entity.Result;
 import com.zc.devcommunity.pojo.Term;
 
 import java.util.List;
@@ -66,4 +67,5 @@ public interface TermService {
      * @return
      */
     List<Term> findAll();
+
 }

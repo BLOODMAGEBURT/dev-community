@@ -2,6 +2,7 @@ package com.zc.devcommunity.service;
 
 import com.github.pagehelper.PageInfo;
 import com.zc.devcommunity.pojo.Blog;
+import com.zc.devcommunity.pojo.BlogWithTypeAndFile;
 
 import java.util.List;
 
@@ -11,6 +12,13 @@ import java.util.List;
  * @Date 2019/6/14 0:16
  *****/
 public interface BlogService {
+
+
+    /**
+     * 增加BlogWithTypeAndFile
+     * */
+    void saveBlogWithTypeAndFile(BlogWithTypeAndFile blogWithTypeAndFile);
+
 
     /***
      * Blog多条件分页查询
